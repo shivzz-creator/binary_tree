@@ -1,0 +1,15 @@
+class Solution {
+public void preorder(TreeNode node , List ans){
+if(node == null) return;
+
+ ans.add(node.val);
+ preorder(node.left , ans);
+ preorder(node.right , ans);
+}
+public List preorderTraversal(TreeNode root) {
+List ans = new ArrayList<>();
+preorder(root , ans);
+return ans;
+
+}
+}
