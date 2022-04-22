@@ -1,43 +1,62 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
 class Solution {
-	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-		List<TreeNode> path1 = new ArrayList<>();
-		List<TreeNode> path2 = new ArrayList<>();
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        
+        ArrayList<TreeNode> p_list = new ArrayList<>();
+        ArrayList<TreeNode> q_list = new ArrayList<>() ;
+        
+        if(nodeToRootPath(root, p , p_list) && nodeToRootPath(root, q , q_list)){
+        
+            int i = p_list.size()-1;
+            int j = q_list.size()-1;
+            while(i>=0 && j>=0){
+                if(p_list.get(i)== q_list.get(j)){
+                    i--;j--;
+                }else{
+                    break;
+                }
+            }
+            return p_list.get(i+1);
+            
+            
+            }else{
+            return null ;
+        } 
+        
+        
+        
+        
+        
+        
+    }
+    public boolean nodeToRootPath(TreeNode root , TreeNode p , ArrayList<TreeNode>p_list ){
 
-		nodeToRootPath(root, p, path1);
-		nodeToRootPath(root, q, path2);
-
-        int p1 = path1.size() - 1, p2 = path2.size() - 1;
-		while (p1 >= 0 && p2 >= 0) {
-			if (path1.get(p1) == path2.get(p2)) {
-				p1--;
-				p2--;
-			} else {
-				break;
-			}
-		}
-
-		return path1.get(p1 + 1);
-	}
-
-	public boolean nodeToRootPath(TreeNode root, TreeNode p, List<TreeNode> p1) {
-		if (root == null)
-			return false;
-
-		if (root == p) {
-			p1.add(root);
-			return true;
-		}
-		boolean hasLeft = nodeToRootPath(root.left, p, p1);
-		if (hasLeft) {
-			p1.add(root);
-			return true;
-		}
-		boolean hasRight = nodeToRootPath(root.right, p, p1);
-		if (hasRight) {
-			p1.add(root);
-			return true;
-		}
-
-		return hasLeft || hasRight;
-	}
+        if(root==null){
+            return false ;
+        }
+        if(root==p){
+            p_list.add(p);
+            return true;
+        }
+        
+        boolean hasLeft  =  nodeToRootPath(root.left, p , p_list);
+        boolean hasRight  =  nodeToRootPath(root.right , p  , p_list) ;
+        
+        if(hasLeft || hasRight){
+                p_list.add(root);
+                return true ;
+        }
+        
+        return false ; 
+        
+        
+    }
 }
