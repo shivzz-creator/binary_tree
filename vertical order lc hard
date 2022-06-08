@@ -1,0 +1,85 @@
+public class TreeNode {
+
+int val;
+TreeNode left;
+TreeNode right;
+TreeNode() {}
+TreeNode(int val) { this.val = val; }
+TreeNode(int val, TreeNode left, TreeNode right) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+}
+}
+*/
+class Solution {
+
+public class Pair implements Comparable {
+TreeNode node ;
+int level ;
+int v;
+Pair(TreeNode node, int level,int v) {
+this.node = node;
+this.level = level ;
+this.v=v;
+}
+
+ public int compareTo(Pair o){
+     if(this.v==o.v){
+             return this.node.val-o.node.val;
+     }
+     return this.v - o.v;
+ }
+}
+
+public List<List> verticalTraversal(TreeNode root) {
+HashMap<Integer,ArrayList> hm = new HashMap<>();
+Queue q = new LinkedList<>();
+int left=0;int right=0;
+
+ q.add(new Pair(root,0,1));
+ while(q.size()>0){
+     System.out.println(q.peek().node.val);
+     Pair rem = q.remove();
+     int l = rem.level;
+    if(hm.containsKey(l) == false){
+         hm.put(l, new ArrayList<>());
+         hm.get(l).add(rem);
+     }else{
+         hm.get(l).add(rem);
+      }
+     System.out.println("Size "+hm.size());
+     if(rem.node.left!=null){
+         q.add(new Pair(rem.node.left,l-1,rem.v+1));
+         if(l-1<left){
+             left=l-1;
+         }
+     }
+     if(rem.node.right!=null){
+         q.add(new Pair(rem.node.right,l+1,rem.v+1));
+         if(l+1>right){
+             right=l+1;
+         }
+     }
+     
+  
+ }
+ 
+ int s = hm.size();
+ int curr = left ;
+ System.out.println(s);
+ List<List<Integer>> ans = new ArrayList<>();
+ while(s-->0){
+ List<Pair> arr = hm.get(curr++) ;
+ Collections.sort(arr);
+  List<Integer> A = new ArrayList<>();   
+ for(Pair p : arr){
+     A.add(p.node.val);
+ }
+ ans.add(A);
+ 
+ }
+ 
+ return ans;
+}
+}
